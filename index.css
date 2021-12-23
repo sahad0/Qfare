@@ -119,12 +119,16 @@
     color: #555557;
 }
 
+#exampleModalLabel{
+    font-family: var(--fonmain);
+}
 
 
 
 
-
-
+#login{
+    font-family: var(--fonmain);
+}
 
 
 
