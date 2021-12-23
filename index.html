@@ -7,7 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QFARE</title>
-
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
      <style><%@include file="/WEB-INF/style/index.css"%></style>
 
@@ -56,7 +57,7 @@
                           <div class="modal-body">
                             
                             <input class="form-control me-2" id="email" placeholder="Email">
-                            <input class="form-control my-2 me-2 " id="pass" placeholder="Password">
+                            <input class="form-control my-2 me-2 " type="password" id="pass" placeholder="Password">
                           
                           </div>
                           <div class="modal-footer">
@@ -202,25 +203,28 @@
   
   <script>  
     $(document).ready(function() {
-      $('#lf1').on('click',function(){
-          var email =$(pp).val();
-            var pass = $(pp1).val();
-           
+    	alert("start");
+      $('#login').on('click',function(){
+    	  alert("Onclick");
+          var email =document.getElementById("email").value;
+            var pass = document.getElementById("pass").value;
+              console.log(pass);
+              
               $.ajax({
-                  type: "post",
-                  url: "Buyer_login", //this is my servlet
-                  data:{email:email,pass:pass},
-                  success: function(msg){
-                    msg=msg.trim();
-                        //  $('#output').append(msg);
-                        if(msg==="true"){
-                          window.location.href="seller_login.jsp";
-                        }
-                        else{
-                          alert("EMAIL AND PASSWORD DOESN'T MATCH");
-                        }
-                  }
-              });  
+	              type: "post",
+	              url: "Buyer_login", //this is my servlet
+	              data:{email:email,pass:pass},
+	              success: function(msg){
+	            	  msg=msg.trim();
+	                    //  $('#output').append(msg);
+	                    if(msg==="true"){
+	                    	window.location.href="seller_login.jsp";
+	                    }
+	                    else{
+	                    	alert("EMAIL AND PASSWORD DOESN'T MATCH");
+	                    }
+	              }
+	          });  
         });
   
     });
