@@ -1,3 +1,9 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+    <%@ page import="bean.*" %>
+    <%@ page import="database.*" %>
+    <%@ page import="java.util.*" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,9 +14,8 @@
 
 
 
-     <link rel="stylesheet" href="index.css">
-     <link rel="stylesheet" href="home.css">
-
+     <style><%@include file="/WEB-INF/style/index.css"%></style>
+     <style><%@include file="/WEB-INF/style/seller_home.css"%></style>
  
 
 
@@ -31,8 +36,13 @@
 </head>
 <body>
 
+<%
+	SellerBean seller=(SellerBean)session.getAttribute("seller");
+	ArrayList<Product_bean> array=new SqlDao().getProductBeans(seller);
+%>
+	
     <div class="s1 container-fluid">
-        <img class="xd img-fluid" data-scroll draggable="false" src="./Screenshot_3.png">
+        <img class="xd img-fluid" data-scroll draggable="false" src="images/Screenshot_3.png">
     </div>
     <!--Navbar-->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -117,6 +127,9 @@
         });
         });
     </script>
+    
+    
+    
     <script>
         window.addEventListener('load', function(e) {
         document.getElementById('file4').addEventListener('change', function(e) {
@@ -138,7 +151,31 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-8"></div>
+            <div class="col-md-8">
+            	
+            	<h2 class="h2s mx-2 my-2 text-decoration-underline">Recent Posts</h2>
+                <div class="row">
+                	<%
+	                	for(int i=0;i<array.size();i++){
+	                		Product_bean obj=array.get(i);
+	                		String base64Image = Base64.getEncoder().encodeToString(obj.getImage1());
+	                	%>
+	                	<div class="col-md-4">
+                        <div class="card my-3">
+                            <div class="card-body">
+                                
+                                <img class="img-fluid xs" src="data:image/jpg;base64,<%=base64Image %>" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                <small>Base Price</small>
+                                <input disabled class="form-control me-2 my-2" id="Password" type="search" value=<%=obj.getBase_price() %>>
+                                <button class="btn btn-dark" id="lp" type="submit">Bid Results</button>
+                            </div>
+                        </div>
+                    </div>	
+	                <% 
+	                	}
+                	%>		
+            	</div>
+         </div>
             <div class="col-md-4" id="divimain">
                                                              <!-- Button trigger modal -->
             <button type="button" class=" btn1 btn btn-dark my-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -157,57 +194,55 @@
                         <div class="modal-body">
                             <div class="card">
                                 <div class="card-body">
+                                   <form action="Seller_home" method="post" enctype="multipart/form-data">
                                    
-                                    <input class="form-control me-2" id="name" placeholder="Product Name">
-                                    <input class="form-control my-2 me-2 " id="basep" placeholder="Base Selling Price">
+                                    <input class="form-control me-2" id="name" name="name" requierd placeholder="Product Name">
+                                    <input class="form-control my-2 me-2 " id="basep" name="basep" required placeholder="Base Selling Price">
                                     <select class="form-select my-2 me-2" name="phcode" aria-label="Default select example">
                                         <option value="Convenience Products">Convenience Products</option>
                                         <option value="Shopping Products.">Shopping Products.</option>
                                         <option value="Specialty Products">Specialty Products</option>
                                         <option value="Unsought Products">Unsought Products</option>
                                     </select>
-                                    <input class="form-control my-2 me-2 " type="date" id="timeD" placeholder="Time Duration">
-                                    <textarea class="form-control my-2 me-2 "  id="descp" placeholder="Description"></textarea>
+                                    <input class="form-control my-2 me-2 " type="date" id="timeD" name="timeD" required placeholder="Time Duration">
+                                    <textarea class="form-control my-2 me-2 "  id="descp" name="descp" required placeholder="Description"></textarea>
                                     <label class="my-2" for="file1">
                                         <small id="lp1">Required Image (1)</small>
-                                        <img class="img-fluid" id="img1" src="./dummy.png">
+                                        <img class="img-fluid" id="img1" src="images/dummy.png">
                                     </label>
-                                    <input type="file"accept="images/*"  hidden  id="file1" multiple>
+                                    <input type="file"accept="images/*" required name="image1" hidden  id="file1" multiple>
 
                                     <label class="my-2" for="file2">
                                         <small id="lp1">Required Image (2)</small>
-                                        <img class="img-fluid" id="img2" src="./dummy.png">
+                                        <img class="img-fluid" id="img2" src="images/dummy.png">
                                     </label>
-                                    <input type="file"accept="images/*"  hidden  id="file2" multiple>
+                                    <input type="file"accept="images/*" required name="image2"  hidden  id="file2" multiple>
 
                                     <label class="my-2" for="file3">
                                         <small id="lp1">Required Image (3)</small>
-                                        <img class="img-fluid" id="img3" src="./dummy.png">
+                                        <img class="img-fluid" id="img3" src="images/dummy.png">
                                     </label>
-                                    <input type="file"accept="images/*"  hidden  id="file3" multiple>
+                                    <input type="file"accept="images/*" required name="image3"  hidden  id="file3" multiple>
 
                                     <label class="my-2" for="file4">
                                         <small id="lp1">Required Image (4)</small>
-                                        <img class="img-fluid" id="img4" src="./dummy.png">
+                                        <img class="img-fluid" id="img4" src="images/dummy.png">
                                     </label>
-                                    <input type="file"accept="images/*"  hidden  id="file4" multiple>
+                                    <input type="file"accept="images/*" required name="image4" hidden  id="file4" multiple>
 
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-light" id="lp22" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-dark" id="lp1">Post</button>
+                        <button type="submit" class="btn btn-dark" id="lp1">Post</button>
+                        </form> 
                         </div>
+                       
                     </div>
                     </div>
                 </div>
 
-               
-
-
-
-                
             </div>
         </div>
     </div>
